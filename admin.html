@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shifty 管理画面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00C875; --green-dark: #00A35E; --green-soft: #E8FBF2;
+  --black: #0A0A0A; --gray-900: #111; --gray-800: #1C1C1C;
+  --gray-600: #4A4A4A; --gray-400: #888; --gray-200: #E8E8E8; --gray-100: #F5F5F5;
+  --white: #fff; --amber: #F59E0B; --amber-soft: #FEF3C7;
+  --red: #EF4444; --red-soft: #FEE2E2; --blue-soft: #EFF6FF; --blue-dark: #1D4ED8;
+  --radius: 12px; --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--gray-100); color: var(--black); display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar { width: 230px; min-height: 100vh; background: var(--gray-900); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+.sidebar-logo { padding: 22px 20px 18px; font-size: 19px; font-weight: 600; color: var(--green); border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; }
+.sidebar-logo span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 400; }
+.sidebar-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+.nav-section { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.25); letter-spacing: 1.2px; text-transform: uppercase; padding: 0 10px; margin: 14px 0 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm); font-size: 14px; color: rgba(255,255,255,0.55); cursor: pointer; transition: all 0.12s; margin-bottom: 2px; user-select: none; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+.nav-item.active { background: rgba(0,200,117,0.14); color: var(--green); font-weight: 500; }
+.nav-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: rgba(0,200,117,0.2); color: var(--green); font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; }
+.sidebar-user { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: var(--black); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.user-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); }
+.user-role { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+/* ── Main ── */
+.main { margin-left: 230px; flex: 1; display: flex; flex-direction: column; }
+.topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 28px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-title { font-size: 16px; font-weight: 600; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.12s; font-family: 'DM Sans', sans-serif; }
+.btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary { background: var(--green); color: var(--black); }
+.btn-primary:hover { background: var(--green-dark); color: var(--white); }
+.btn-outline { background: transparent; border: 1px solid var(--gray-200); color: var(--gray-600); }
+.btn-outline:hover { border-color: var(--gray-400); color: var(--black); }
+.content { padding: 24px 28px; flex: 1; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── Stats ── */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+.stat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 18px 20px; }
+.stat-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--black); letter-spacing: -1px; line-height: 1; }
+.stat-sub { font-size: 12px; color: var(--gray-400); margin-top: 6px; }
+.stat-up { color: var(--green-dark); font-weight: 500; }
+
+/* ── Cards ── */
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 20px; }
+.card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.card-link { font-size: 13px; color: var(--green-dark); cursor: pointer; font-weight: 400; }
+
+/* ── Badges ── */
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
+.badge-green { background: var(--green-soft); color: var(--green-dark); }
+.badge-amber { background: var(--amber-soft); color: #92400E; }
+.badge-red { background: var(--red-soft); color: #991B1B; }
+.badge-blue { background: var(--blue-soft); color: var(--blue-dark); }
+.badge-gray { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); }
+.badge-dot::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; display:inline-block; }
+
+/* ── Table ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); background: var(--gray-100); white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #FAFAFA; }
+.worker-name { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+/* ── Action buttons ── */
+.action-btn { padding: 4px 11px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--gray-200); background: transparent; color: var(--gray-600); transition: all 0.1s; font-family: 'DM Sans', sans-serif; }
+.action-btn:hover { background: var(--gray-100); }
+.action-btn.approve { border-color: var(--green); color: var(--green-dark); }
+.action-btn.approve:hover { background: var(--green-soft); }
+.action-btn.reject { border-color: var(--red); color: var(--red); }
+.action-btn.reject:hover { background: var(--red-soft); }
+.action-btn.pay { border-color: var(--amber); color: #92400E; }
+.action-btn.pay:hover { background: var(--amber-soft); }
+
+/* ── Search/Filter ── */
+.filter-row { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.search-wrap { position: relative; }
+.search-wrap input { padding-left: 34px; width: 220px; }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gray-400); pointer-events: none; }
+.search-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+input, select, textarea { padding: 8px 12px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--black); background: var(--white); outline: none; transition: border-color 0.15s; }
+input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,200,117,0.1); }
+select.sm { padding: 8px 10px; }
+
+/* ── Form ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1/-1; }
+label { font-size: 12px; font-weight: 500; color: var(--gray-600); }
+textarea { resize: vertical; min-height: 80px; width: 100%; }
+input[type=text], input[type=number], input[type=email] { width: 100%; }
+
+/* ── Job cards (admin) ── */
+.job-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100); gap: 12px; }
+.job-item:last-child { border-bottom: none; }
+.job-item-info { flex: 1; }
+.job-item-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.job-item-meta { font-size: 12px; color: var(--gray-400); display: flex; gap: 12px; }
+.progress-bar { width: 80px; height: 4px; background: var(--gray-200); border-radius: 99px; overflow: hidden; display: inline-block; vertical-align: middle; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 99px; }
+
+/* ── Payment ── */
+.payment-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100); gap: 12px; }
+.payment-row:last-child { border-bottom: none; }
+.pay-amount { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 600; }
+.bank-detail { font-size: 11px; color: var(--gray-400); margin-top: 2px; font-family: 'DM Mono', monospace; }
+
+/* ── Shift / Attendance ── */
+.shift-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 16px; }
+.shift-day { background: var(--gray-100); border-radius: var(--radius-sm); padding: 8px 6px; text-align: center; }
+.shift-day-label { font-size: 10px; color: var(--gray-400); font-weight: 600; margin-bottom: 6px; }
+.shift-slot { height: 28px; border-radius: 4px; margin-bottom: 4px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+.shift-filled { background: var(--green-soft); color: var(--green-dark); }
+.shift-open { background: var(--gray-200); color: var(--gray-400); border: 1px dashed var(--gray-400); }
+
+/* ── Modal ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.modal-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-header h2 { font-size: 17px; font-weight: 600; }
+.modal-body { padding: 0 24px 24px; }
+.close-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--gray-100); border: none; cursor: pointer; font-size: 17px; color: var(--gray-600); display: flex; align-items: center; justify-content: center; }
+.btn-full { width: 100%; padding: 12px; margin-top: 14px; font-size: 14px; }
+
+/* ── Toast ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--black); color: var(--white); padding: 12px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── Two-col ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.mb-14 { margin-bottom: 14px; }
+.mb-20 { margin-bottom: 20px; }
+.text-muted { color: var(--gray-400); font-size: 13px; }
+.mono { font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">Shifty <span>管理画面</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">メイン</div>
+    <div class="nav-item active" onclick="nav(this,'dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      ダッシュボード
+    </div>
+    <div class="nav-item" onclick="nav(this,'jobs')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      求人管理
+    </div>
+    <div class="nav-section">採用</div>
+    <div class="nav-item" onclick="nav(this,'applicants')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      応募者管理
+      <span class="nav-badge" id="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="nav(this,'workers')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      ワーカー一覧
+    </div>
+    <div class="nav-item" onclick="nav(this,'shifts')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      シフト管理
+    </div>
+    <div class="nav-section">経理</div>
+    <div class="nav-item" onclick="nav(this,'payment')">
+      <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      給与・振込
+    </div>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-avatar">山</div>
+    <div><div class="user-name">山田 太郎</div><div class="user-role">管理者</div></div>
+  </div>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title" id="topbar-title">ダッシュボード</div>
+    </div>
+    <div class="topbar-right">
+      <a href="shifty-jobs.html" target="_blank" class="btn btn-outline">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        求人サイトを開く
+      </a>
+      <button class="btn btn-primary" id="topbar-action" onclick="openJobModal()" style="display:none;">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        求人を作成
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ Dashboard ═══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">登録ワーカー</div>
+          <div class="stat-value">128</div>
+          <div class="stat-sub"><span class="stat-up">▲ 12</span> 今月追加</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">今月の採用</div>
+          <div class="stat-value">23</div>
+          <div class="stat-sub"><span class="stat-up">▲ 5</span> 先月比</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">進行中の求人</div>
+          <div class="stat-value">5</div>
+          <div class="stat-sub text-muted">3件 募集中</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">今月支払予定</div>
+          <div class="stat-value mono" style="font-size:20px;">¥218,500</div>
+          <div class="stat-sub text-muted">14名分</div>
+        </div>
+      </div>
+
+      <div class="two-col mb-14">
+        <div class="card">
+          <div class="card-title">審査待ち応募者 <a class="card-link" onclick="nav(document.querySelector('[onclick*=applicants]'),'applicants')">すべて見る →</a></div>
+          <div id="dash-applicants"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">未振込リスト <a class="card-link" onclick="nav(document.querySelector('[onclick*=payment]'),'payment')">詳細 →</a></div>
+          <div id="dash-payments"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">求人の稼働状況</div>
+        <div id="dash-jobs"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Jobs ═══ -->
+    <div class="page" id="page-jobs">
+      <div class="filter-row">
+        <div class="search-wrap">
+          <div class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <input type="text" placeholder="求人を検索..." id="job-search" oninput="renderJobsPage()">
+        </div>
+        <select class="sm" id="job-status-f" onchange="renderJobsPage()">
+          <option value="">すべて</option><option value="募集中">募集中</option><option value="締切">締切</option>
+        </select>
+      </div>
+      <div class="card" id="jobs-list-card">
+        <div id="jobs-list-inner"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Applicants ═══ -->
+    <div class="page" id="page-applicants">
+      <div class="filter-row">
+        <div class="search-wrap">
+          <div class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <input type="text" placeholder="氏名で検索..." id="app-search" oninput="renderApplicants()">
+        </div>
+        <select class="sm" id="app-status-f" onchange="renderApplicants()">
+          <option value="">すべて</option><option value="審査中">審査中</option><option value="採用">採用</option><option value="見送り">見送り</option>
+        </select>
+        <select class="sm" id="app-job-f" onchange="renderApplicants()">
+          <option value="">すべての求人</option>
+        </select>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>氏名</th><th>応募求人</th><th>応募日</th><th>口座情報</th><th>本人確認</th><th>ステータス</th><th>操作</th>
+            </tr></thead>
+            <tbody id="app-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Workers ═══ -->
+    <div class="page" id="page-workers">
+      <div class="filter-row">
+        <div class="search-wrap">
+          <div class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <input type="text" placeholder="氏名・口座で検索..." id="wk-search" oninput="renderWorkers()">
+        </div>
+        <select class="sm" id="wk-verify-f" onchange="renderWorkers()">
+          <option value="">すべて</option><option value="1">本人確認済</option><option value="0">未確認</option>
+        </select>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>氏名</th><th>登録日</th><th>口座情報</th><th>稼働回数</th><th>本人確認</th><th>操作</th>
+            </tr></thead>
+            <tbody id="wk-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Shifts ═══ -->
+    <div class="page" id="page-shifts">
+      <div class="card mb-14">
+        <div class="card-title">今週のシフト状況</div>
+        <div class="shift-grid" id="shift-grid"></div>
+        <div style="font-size:12px;color:var(--gray-400);display:flex;gap:12px;">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--green-soft);display:inline-block;"></span>出勤確定</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--gray-200);border:1px dashed var(--gray-400);display:inline-block;"></span>空き枠</span>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--gray-200);font-size:14px;font-weight:600;">シフト詳細</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>ワーカー</th><th>求人</th><th>日付</th><th>時間</th><th>時給</th><th>小計</th><th>出勤確認</th>
+            </tr></thead>
+            <tbody id="shift-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Payment ═══ -->
+    <div class="page" id="page-payment">
+      <div class="two-col mb-14">
+        <div class="card">
+          <div class="stat-label">今月の支払予定総額</div>
+          <div class="stat-value mono" style="font-size:22px;margin:8px 0;">¥218,500</div>
+          <div class="text-muted">対象ワーカー 14名</div>
+        </div>
+        <div class="card" style="background:var(--green-soft);border-color:var(--green);">
+          <div class="stat-label" style="color:var(--green-dark);">振込済</div>
+          <div class="stat-value mono" style="font-size:22px;margin:8px 0;color:var(--green-dark);">¥18,900</div>
+          <div style="font-size:13px;color:var(--green-dark);">残り ¥199,600 未振込</div>
+        </div>
+      </div>
+
+      <div class="card mb-14">
+        <div class="card-title">
+          振込一覧
+          <button class="btn btn-outline" onclick="exportCSV()">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            CSVエクスポート
+          </button>
+        </div>
+        <div id="payment-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">振込フロー</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:var(--black);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">1</div>
+            <div><div style="font-size:14px;font-weight:500;margin-bottom:2px;">勤務実績の確認・承認</div><div class="text-muted">シフト管理画面から出勤を承認する</div></div>
+          </div>
+          <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:var(--black);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</div>
+            <div><div style="font-size:14px;font-weight:500;margin-bottom:2px;">振込額の確定</div><div class="text-muted">時給×勤務時間をシステムが自動計算。CSVでエクスポート可能。</div></div>
+          </div>
+          <div style="display:flex;gap:14px;padding:12px 0;">
+            <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:var(--black);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</div>
+            <div><div style="font-size:14px;font-weight:500;margin-bottom:2px;">企業からワーカー口座へ直接振込</div><div class="text-muted">プラットフォームは口座情報の管理のみ。振込操作は企業が直接行う。</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- Job Modal -->
+<div class="modal-overlay" id="job-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="job-modal-title">求人を作成</h2>
+      <button class="close-btn" onclick="closeJobModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>職種・タイトル</label><input type="text" id="m-title" placeholder="カフェスタッフ..."></div>
+        <div class="form-group"><label>勤務地</label><input type="text" id="m-loc" placeholder="大阪市北区"></div>
+        <div class="form-group"><label>カテゴリ</label><select id="m-cat"><option>飲食</option><option>軽作業</option><option>イベント</option><option>清掃</option><option>その他</option></select></div>
+        <div class="form-group"><label>開始時刻</label><input type="text" id="m-start" placeholder="09:00"></div>
+        <div class="form-group"><label>終了時刻</label><input type="text" id="m-end" placeholder="17:00"></div>
+        <div class="form-group"><label>時給（円）</label><input type="number" id="m-wage" placeholder="1200"></div>
+        <div class="form-group"><label>募集人数</label><input type="number" id="m-slots" placeholder="3"></div>
+        <div class="form-group full"><label>仕事内容</label><textarea id="m-desc" placeholder="業務の詳細..."></textarea></div>
+        <div class="form-group full"><label>スキル・条件（カンマ区切り）</label><input type="text" id="m-tags" placeholder="接客, 笑顔, 経験不問"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveJob()">求人を投稿する</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span style="color:var(--green);">✓</span><span id="toast-msg"></span></div>
+
+<script>
+// ── DATA ──
+let jobs = [
+  { id:1, title:'カフェスタッフ', loc:'大阪市北区', cat:'飲食', start:'10:00', end:'15:00', wage:1200, slots:2, filled:0, status:'募集中', desc:'カフェでのホール・ドリンク補助業務。', tags:['接客','ドリンク','経験不問'] },
+  { id:2, title:'倉庫ピッキング', loc:'大阪市住之江区', cat:'軽作業', start:'08:00', end:'17:00', wage:1350, slots:5, filled:3, status:'募集中', desc:'商品の仕分け・ピッキング作業。', tags:['軽作業','フォークなし'] },
+  { id:3, title:'イベントスタッフ', loc:'大阪城ホール', cat:'イベント', start:'13:00', end:'22:00', wage:1500, slots:10, filled:10, status:'締切', desc:'コンサートの誘導・清掃スタッフ。', tags:['誘導','清掃'] },
+  { id:4, title:'居酒屋ホール', loc:'大阪市中央区', cat:'飲食', start:'17:00', end:'23:00', wage:1100, slots:3, filled:1, status:'募集中', desc:'居酒屋でのホール業務全般。', tags:['接客','夜勤'] },
+  { id:5, title:'清掃スタッフ', loc:'大阪市西区', cat:'清掃', start:'06:00', end:'10:00', wage:1050, slots:4, filled:1, status:'募集中', desc:'オフィスビルの清掃。', tags:['早朝','週2〜OK'] },
+];
+let applicants = [
+  { id:1, name:'田中 花子', job:'カフェスタッフ', date:'11/20', bank:'〇〇銀行 普通 ****321', verified:true, status:'審査中', c:'#E1F5EE', tc:'#0F6E56', i:'田' },
+  { id:2, name:'鈴木 一郎', job:'倉庫ピッキング', date:'11/19', bank:'△△銀行 普通 ****567', verified:true, status:'採用', c:'#E6F1FB', tc:'#185FA5', i:'鈴' },
+  { id:3, name:'佐藤 美咲', job:'イベントスタッフ', date:'11/18', bank:'□□銀行 普通 ****890', verified:true, status:'採用', c:'#FAEEDA', tc:'#854F0B', i:'佐' },
+  { id:4, name:'高橋 健太', job:'カフェスタッフ', date:'11/17', bank:'××銀行 普通 ****123', verified:false, status:'見送り', c:'#FBEAF0', tc:'#993556', i:'高' },
+  { id:5, name:'伊藤 龍', job:'居酒屋ホール', date:'11/16', bank:'△△銀行 普通 ****456', verified:true, status:'審査中', c:'#EAF3DE', tc:'#3B6D11', i:'伊' },
+  { id:6, name:'中村 あい', job:'清掃スタッフ', date:'11/15', bank:'〇〇銀行 普通 ****789', verified:false, status:'審査中', c:'#E6F1FB', tc:'#185FA5', i:'中' },
+];
+let workers = [
+  { name:'田中 花子', date:'2025/10/15', bank:'〇〇銀行 普通 ****321', shifts:3, verified:true, c:'#E1F5EE', tc:'#0F6E56', i:'田' },
+  { name:'鈴木 一郎', date:'2025/09/02', bank:'△△銀行 普通 ****567', shifts:12, verified:true, c:'#E6F1FB', tc:'#185FA5', i:'鈴' },
+  { name:'佐藤 美咲', date:'2025/11/01', bank:'□□銀行 普通 ****890', shifts:7, verified:true, c:'#FAEEDA', tc:'#854F0B', i:'佐' },
+  { name:'高橋 健太', date:'2025/11/10', bank:'××銀行 普通 ****123', shifts:0, verified:false, c:'#FBEAF0', tc:'#993556', i:'高' },
+];
+let payments = [
+  { name:'鈴木 一郎', bank:'△△銀行 普通 ****567', amount:18900, status:'振込済', c:'#E6F1FB', tc:'#185FA5', i:'鈴' },
+  { name:'佐藤 美咲', bank:'□□銀行 普通 ****890', amount:22500, status:'未振込', c:'#FAEEDA', tc:'#854F0B', i:'佐' },
+  { name:'田中 花子', bank:'〇〇銀行 普通 ****321', amount:15600, status:'未振込', c:'#E1F5EE', tc:'#0F6E56', i:'田' },
+  { name:'伊藤 龍', bank:'△△銀行 普通 ****456', amount:8800, status:'未振込', c:'#EAF3DE', tc:'#3B6D11', i:'伊' },
+];
+let shifts = [
+  { worker:'鈴木 一郎', job:'倉庫ピッキング', date:'11/18', start:'08:00', end:'17:00', wage:1350, confirmed:true, i:'鈴', c:'#E6F1FB', tc:'#185FA5' },
+  { worker:'佐藤 美咲', job:'イベントスタッフ', date:'11/20', start:'13:00', end:'22:00', wage:1500, confirmed:true, i:'佐', c:'#FAEEDA', tc:'#854F0B' },
+  { worker:'田中 花子', job:'カフェスタッフ', date:'11/22', start:'10:00', end:'15:00', wage:1200, confirmed:false, i:'田', c:'#E1F5EE', tc:'#0F6E56' },
+  { worker:'伊藤 龍', job:'居酒屋ホール', date:'11/23', start:'17:00', end:'23:00', wage:1100, confirmed:false, i:'伊', c:'#EAF3DE', tc:'#3B6D11' },
+];
+
+// ── NAV ──
+const pages = { dashboard:'ダッシュボード', jobs:'求人管理', applicants:'応募者管理', workers:'ワーカー一覧', shifts:'シフト管理', payment:'給与・振込' };
+function nav(el, id) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('topbar-title').textContent = pages[id];
+  document.getElementById('topbar-action').style.display = id === 'jobs' ? 'inline-flex' : 'none';
+  if (id === 'dashboard') renderDash();
+  if (id === 'jobs') renderJobsPage();
+  if (id === 'applicants') { populateJobFilter(); renderApplicants(); }
+  if (id === 'workers') renderWorkers();
+  if (id === 'shifts') renderShifts();
+  if (id === 'payment') renderPayments();
+}
+
+// ── DASHBOARD ──
+function renderDash() {
+  const da = document.getElementById('dash-applicants');
+  const pending = applicants.filter(a => a.status === '審査中');
+  da.innerHTML = pending.length === 0 ? '<p class="text-muted">審査待ちはありません</p>' :
+    pending.map(a => `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+        <div class="avatar" style="background:${a.c};color:${a.tc};width:28px;height:28px;font-size:11px;">${a.i}</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${a.name}</div><div style="font-size:11px;color:var(--gray-400);">${a.job} · ${a.date}</div></div>
+        <button class="action-btn approve" onclick="updateApplicant(${a.id},'採用');renderDash();">採用</button>
+      </div>`).join('');
+
+  const dp = document.getElementById('dash-payments');
+  const unpaid = payments.filter(p => p.status === '未振込');
+  dp.innerHTML = unpaid.map(p => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+      <div style="display:flex;align-items:center;gap:8px;"><div class="avatar" style="background:${p.c};color:${p.tc};width:28px;height:28px;font-size:11px;">${p.i}</div><span style="font-size:13px;">${p.name}</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="mono" style="font-size:13px;font-weight:500;">¥${p.amount.toLocaleString()}</span><button class="action-btn pay" onclick="markPaid('${p.name}');renderDash();">確定</button></div>
+    </div>`).join('');
+
+  const dj = document.getElementById('dash-jobs');
+  dj.innerHTML = jobs.map(j => {
+    const pct = Math.round(j.filled/j.slots*100);
+    return `<div class="job-item">
+      <div class="job-item-info">
+        <div class="job-item-title">${j.title}</div>
+        <div class="job-item-meta"><span>${j.loc}</span><span>${j.start}〜${j.end}</span><span>¥${j.wage.toLocaleString()}/h</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;"></div></div><div style="font-size:11px;color:var(--gray-400);margin-top:3px;text-align:center;">${j.filled}/${j.slots}</div></div>
+        <span class="badge ${j.status==='募集中'?'badge-green badge-dot':'badge-gray'}">${j.status}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── JOBS ──
+let editJobId = null;
+function renderJobsPage() {
+  const q = (document.getElementById('job-search')?.value||'').toLowerCase();
+  const sf = document.getElementById('job-status-f')?.value||'';
+  const filtered = jobs.filter(j => (j.title.toLowerCase().includes(q)||j.loc.toLowerCase().includes(q)) && (sf===''||j.status===sf));
+  document.getElementById('jobs-list-inner').innerHTML = filtered.map(j => {
+    const pct = Math.round(j.filled/j.slots*100);
+    return `<div class="job-item">
+      <div class="job-item-info">
+        <div class="job-item-title">${j.title} <span class="badge ${j.status==='募集中'?'badge-green':j.status==='締切'?'badge-gray':'badge-amber'}" style="font-size:10px;">${j.status}</span></div>
+        <div class="job-item-meta"><span>📍 ${j.loc}</span><span>🕐 ${j.start}〜${j.end}</span><span>¥${j.wage.toLocaleString()}/h</span></div>
+        <div style="display:flex;gap:6px;margin-top:6px;">${j.tags.map(t=>`<span class="badge badge-blue">${t}</span>`).join('')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="text-align:center;">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;"></div></div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:3px;">${j.filled}/${j.slots}名</div>
+        </div>
+        <button class="action-btn" onclick="openJobModal(${j.id})">編集</button>
+        <button class="action-btn reject" onclick="deleteJob(${j.id})">削除</button>
+      </div>
+    </div>`;
+  }).join('') || '<p class="text-muted" style="padding:16px;">求人が見つかりません</p>';
+}
+
+function openJobModal(id) {
+  editJobId = id || null;
+  const j = id ? jobs.find(x=>x.id===id) : null;
+  document.getElementById('job-modal-title').textContent = id ? '求人を編集' : '求人を作成';
+  ['title','loc','start','end','wage','slots','desc','tags'].forEach(k => {
+    const el = document.getElementById('m-'+k);
+    el.value = j ? (k==='tags'?j.tags.join(', '):j[k]||'') : '';
+  });
+  if (j) document.getElementById('m-cat').value = j.cat;
+  document.getElementById('job-modal').classList.add('open');
+}
+function closeJobModal() { document.getElementById('job-modal').classList.remove('open'); }
+function saveJob() {
+  const title = document.getElementById('m-title').value.trim();
+  if (!title) { showToast('タイトルを入力してください'); return; }
+  const data = { title, loc: document.getElementById('m-loc').value, cat: document.getElementById('m-cat').value, start: document.getElementById('m-start').value, end: document.getElementById('m-end').value, wage: parseInt(document.getElementById('m-wage').value)||0, slots: parseInt(document.getElementById('m-slots').value)||1, desc: document.getElementById('m-desc').value, tags: document.getElementById('m-tags').value.split(',').map(t=>t.trim()).filter(Boolean) };
+  if (editJobId) { Object.assign(jobs.find(j=>j.id===editJobId), data); showToast('求人を更新しました'); }
+  else { jobs.unshift({id:Date.now(),filled:0,status:'募集中',...data}); showToast('求人を投稿しました'); }
+  closeJobModal(); renderJobsPage();
+}
+function deleteJob(id) { if(!confirm('この求人を削除しますか？')) return; jobs = jobs.filter(j=>j.id!==id); renderJobsPage(); showToast('求人を削除しました'); }
+
+// ── APPLICANTS ──
+function populateJobFilter() {
+  const sel = document.getElementById('app-job-f');
+  sel.innerHTML = '<option value="">すべての求人</option>' + [...new Set(applicants.map(a=>a.job))].map(j=>`<option>${j}</option>`).join('');
+}
+function renderApplicants() {
+  const q = (document.getElementById('app-search')?.value||'').toLowerCase();
+  const sf = document.getElementById('app-status-f')?.value||'';
+  const jf = document.getElementById('app-job-f')?.value||'';
+  const filtered = applicants.filter(a => a.name.toLowerCase().includes(q) && (sf===''||a.status===sf) && (jf===''||a.job===jf));
+  const badge = n => n==='採用'?'badge-green badge-dot':n==='審査中'?'badge-amber badge-dot':'badge-gray';
+  document.getElementById('app-tbody').innerHTML = filtered.map(a => `
+    <tr>
+      <td><div class="worker-name"><div class="avatar" style="background:${a.c};color:${a.tc};">${a.i}</div>${a.name}</div></td>
+      <td>${a.job}</td>
+      <td>${a.date}</td>
+      <td class="mono" style="font-size:11px;">${a.bank}</td>
+      <td>${a.verified?'<span class="badge badge-green badge-dot">確認済</span>':'<span class="badge badge-amber badge-dot">未確認</span>'}</td>
+      <td><span class="badge ${badge(a.status)}">${a.status}</span></td>
+      <td style="display:flex;gap:6px;">${a.status==='審査中'?`<button class="action-btn approve" onclick="updateApplicant(${a.id},'採用')">採用</button><button class="action-btn reject" onclick="updateApplicant(${a.id},'見送り')">見送り</button>`:`<button class="action-btn">詳細</button>`}</td>
+    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:24px;">応募者が見つかりません</td></tr>`;
+  const pendingCount = applicants.filter(a=>a.status==='審査中').length;
+  const nb = document.getElementById('nav-badge');
+  if (pendingCount > 0) { nb.textContent = pendingCount; nb.style.display=''; }
+  else nb.style.display = 'none';
+}
+function updateApplicant(id, status) {
+  const a = applicants.find(x=>x.id===id);
+  if (!a) return;
+  a.status = status;
+  renderApplicants();
+  showToast(`${a.name}を「${status}」にしました`);
+}
+
+// ── WORKERS ──
+function renderWorkers() {
+  const q = (document.getElementById('wk-search')?.value||'').toLowerCase();
+  const vf = document.getElementById('wk-verify-f')?.value||'';
+  const filtered = workers.filter(w => (w.name.toLowerCase().includes(q)||w.bank.toLowerCase().includes(q)) && (vf===''||(vf==='1'&&w.verified)||(vf==='0'&&!w.verified)));
+  document.getElementById('wk-tbody').innerHTML = filtered.map(w => `
+    <tr>
+      <td><div class="worker-name"><div class="avatar" style="background:${w.c};color:${w.tc};">${w.i}</div>${w.name}</div></td>
+      <td>${w.date}</td>
+      <td class="mono" style="font-size:11px;">${w.bank}</td>
+      <td>${w.shifts}回</td>
+      <td>${w.verified?'<span class="badge badge-green badge-dot">確認済</span>':'<span class="badge badge-amber badge-dot">未確認</span>'}</td>
+      <td><button class="action-btn">詳細</button></td>
+    </tr>`).join('');
+}
+
+// ── SHIFTS ──
+function renderShifts() {
+  const days = ['月','火','水','木','金','土','日'];
+  const dates = ['11/18','11/19','11/20','11/21','11/22','11/23','11/24'];
+  document.getElementById('shift-grid').innerHTML = days.map((d,i) => {
+    const dayShifts = shifts.filter(s => s.date === dates[i]);
+    return `<div class="shift-day">
+      <div class="shift-day-label">${d}<br><span style="font-size:9px;color:var(--gray-400);">${dates[i]}</span></div>
+      ${dayShifts.map(s=>`<div class="shift-slot ${s.confirmed?'shift-filled':'shift-open'}" title="${s.worker}">${s.i}</div>`).join('')}
+      ${dayShifts.length===0?'<div class="shift-slot shift-open">-</div>':''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('shift-tbody').innerHTML = shifts.map((s,i) => {
+    const hrs = (parseInt(s.end)-parseInt(s.start));
+    const total = s.wage * hrs;
+    return `<tr>
+      <td><div class="worker-name"><div class="avatar" style="background:${s.c};color:${s.tc};">${s.i}</div>${s.worker}</div></td>
+      <td>${s.job}</td>
+      <td>${s.date}</td>
+      <td>${s.start}〜${s.end}</td>
+      <td class="mono">¥${s.wage.toLocaleString()}</td>
+      <td class="mono" style="font-weight:500;">¥${total.toLocaleString()}</td>
+      <td>${s.confirmed?'<span class="badge badge-green badge-dot">確認済</span>':`<button class="action-btn approve" onclick="confirmShift(${i})">出勤確認</button>`}</td>
+    </tr>`;
+  }).join('');
+}
+function confirmShift(i) { shifts[i].confirmed = true; renderShifts(); showToast('出勤を確認しました'); }
+
+// ── PAYMENTS ──
+function renderPayments() {
+  document.getElementById('payment-list').innerHTML = payments.map(p => `
+    <div class="payment-row">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="avatar" style="background:${p.c};color:${p.tc};">${p.i}</div>
+        <div><div style="font-size:14px;font-weight:500;">${p.name}</div><div class="bank-detail">${p.bank}</div></div>
+      </div>
+      <div style="text-align:right;">
+        <div class="pay-amount">¥${p.amount.toLocaleString()}</div>
+        <div style="margin-top:5px;">${p.status==='振込済'?'<span class="badge badge-green badge-dot">振込済</span>':`<button class="action-btn pay" onclick="markPaid('${p.name}')">振込確定</button>`}</div>
+      </div>
+    </div>`).join('');
+}
+function markPaid(name) {
+  const p = payments.find(x=>x.name===name);
+  if(p) { p.status='振込済'; renderPayments(); showToast(`${name}への振込を確定しました`); }
+}
+
+function exportCSV() {
+  const rows = [['氏名','口座','金額','ステータス'], ...payments.map(p=>[p.name,p.bank,p.amount,p.status])];
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));
+  a.download = 'payment_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  showToast('CSVをエクスポートしました');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+document.getElementById('job-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeJobModal(); });
+
+renderDash();
+</script>
+</body>
+</html>
