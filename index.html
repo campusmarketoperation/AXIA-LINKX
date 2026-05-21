@@ -3,593 +3,757 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AXIA LINKX — バイト・スポットワーク求人</title>
+<title>AXIA LINKX — バイト・スポットワーク</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --green: #00C875;
-  --green-dark: #00A35E;
-  --green-soft: #E8FBF2;
-  --black: #0A0A0A;
-  --gray-800: #1C1C1C;
-  --gray-600: #4A4A4A;
-  --gray-400: #888;
-  --gray-200: #E8E8E8;
-  --gray-100: #F5F5F5;
-  --white: #FFFFFF;
-  --amber: #F59E0B;
-  --amber-soft: #FEF3C7;
-  --blue-soft: #EFF6FF;
-  --blue-dark: #1D4ED8;
-  --radius: 14px;
-  --radius-sm: 8px;
+  --bg: #F7F7F5;
+  --surface: #FFFFFF;
+  --border: #E5E5E3;
+  --border-dark: #D0D0CE;
+  --text: #1A1A1A;
+  --text-2: #555550;
+  --text-3: #999994;
+  --accent: #2563EB;
+  --accent-bg: #EFF4FF;
+  --green: #16A34A;
+  --green-bg: #F0FDF4;
+  --amber: #D97706;
+  --amber-bg: #FFFBEB;
+  --red: #DC2626;
+  --r: 6px;
+  --r-sm: 4px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--gray-100); color: var(--black); }
-
-/* ── Header ── */
-header {
-  background: var(--black); padding: 0 24px; height: 58px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
-.logo { font-size: 20px; font-weight: 600; color: var(--green); letter-spacing: -0.5px; }
-.logo span { color: var(--white); }
-.header-nav { display: flex; align-items: center; gap: 8px; }
-.nav-link { font-size: 14px; color: rgba(255,255,255,0.6); padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: color 0.15s; border: none; background: none; }
-.nav-link:hover { color: var(--white); }
-.nav-link.active { color: var(--white); font-weight: 500; }
-.btn-header { background: var(--green); color: var(--black); font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: var(--radius-sm); border: none; cursor: pointer; }
-.btn-header:hover { background: var(--green-dark); color: var(--white); }
 
 /* ── Pages ── */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ── Hero ── */
-.hero {
-  background: var(--black); padding: 56px 24px 48px; text-align: center;
+/* ══ HEADER ══ */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 52px;
+  display: flex; align-items: center;
+  padding: 0 24px;
 }
-.hero-label { display: inline-block; background: rgba(0,200,117,0.15); color: var(--green); font-size: 12px; font-weight: 600; letter-spacing: 1px; padding: 4px 12px; border-radius: 99px; margin-bottom: 16px; }
-.hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 600; color: var(--white); letter-spacing: -1px; line-height: 1.15; margin-bottom: 12px; }
-.hero h1 em { color: var(--green); font-style: normal; }
-.hero p { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
-.hero-search {
-  display: flex; max-width: 540px; margin: 0 auto; gap: 8px;
-  background: var(--white); border-radius: 12px; padding: 6px; box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+.logo {
+  font-size: 17px; font-weight: 600; color: var(--text);
+  letter-spacing: -0.3px; text-decoration: none;
+  cursor: pointer;
 }
-.hero-search input { flex: 1; border: none; outline: none; font-size: 15px; padding: 8px 12px; background: transparent; font-family: 'DM Sans', sans-serif; }
-.hero-search button { background: var(--green); color: var(--black); font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap; }
-.hero-stats { display: flex; justify-content: center; gap: 32px; margin-top: 32px; }
-.hero-stat { text-align: center; }
-.hero-stat-num { font-size: 22px; font-weight: 600; color: var(--white); font-family: 'DM Mono', monospace; }
-.hero-stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.logo span { color: var(--accent); }
 
-/* ── Layout ── */
-.container { max-width: 1080px; margin: 0 auto; padding: 32px 24px; }
-.jobs-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
+/* ── Bottom Tab Bar ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px;
+  padding: 10px 0 11px;
+  border: none; background: none; cursor: pointer;
+  font-family: inherit; color: var(--text-3);
+  transition: color .15s;
+}
+.tab-item:hover { color: var(--text-2); }
+.tab-item.active { color: var(--accent); }
+.tab-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+.tab-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tab-label { font-size: 10px; font-weight: 500; letter-spacing: .02em; }
 
-/* ── Filters sidebar ── */
-.filter-panel { background: var(--white); border-radius: var(--radius); padding: 20px; border: 1px solid var(--gray-200); position: sticky; top: 74px; }
-.filter-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 12px; }
-.filter-group { margin-bottom: 18px; }
-.filter-group label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
-.filter-chip { display: inline-flex; align-items: center; padding: 5px 11px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 1px solid var(--gray-200); cursor: pointer; margin: 3px; color: var(--gray-600); transition: all 0.12s; background: var(--white); }
-.filter-chip:hover { border-color: var(--green); color: var(--green-dark); }
-.filter-chip.active { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
-.filter-range { width: 100%; accent-color: var(--green); }
-.filter-reset { width: 100%; padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: transparent; font-size: 13px; color: var(--gray-400); cursor: pointer; margin-top: 4px; }
-.filter-reset:hover { color: var(--black); border-color: var(--gray-400); }
+/* ══ HOME ══ */
+.home-top {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 32px 24px 24px;
+}
+.home-title {
+  font-size: 22px; font-weight: 600; letter-spacing: -0.4px;
+  color: var(--text); margin-bottom: 16px;
+}
+.search-row {
+  display: flex; gap: 8px; max-width: 560px;
+}
+.search-input {
+  flex: 1; font-family: inherit; font-size: 14px; color: var(--text);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 9px 12px; outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-3); }
+.search-btn {
+  font-size: 13px; font-weight: 500; color: var(--surface);
+  background: var(--accent); border: none; border-radius: var(--r-sm);
+  padding: 9px 18px; cursor: pointer; font-family: inherit;
+  white-space: nowrap; transition: opacity .15s;
+}
+.search-btn:hover { opacity: .85; }
 
-/* ── Job Cards ── */
-.jobs-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.jobs-count { font-size: 14px; color: var(--gray-400); }
-.jobs-sort select { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px; background: var(--white); outline: none; }
-.jobs-grid { display: flex; flex-direction: column; gap: 10px; }
+/* Filter strip */
+.filter-strip {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 6px;
+  overflow-x: auto; height: 46px;
+}
+.chip {
+  font-size: 12px; font-weight: 400; color: var(--text-2);
+  padding: 4px 12px; border-radius: 99px;
+  border: 1px solid var(--border);
+  background: none; cursor: pointer; white-space: nowrap;
+  font-family: inherit; transition: all .12s;
+}
+.chip:hover { border-color: var(--border-dark); color: var(--text); }
+.chip.on { background: var(--text); color: var(--surface); border-color: var(--text); }
+.strip-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; margin: 0 4px; }
+.filter-sel {
+  font-size: 12px; font-family: inherit; color: var(--text-2);
+  border: 1px solid var(--border); border-radius: 99px;
+  background: none; padding: 4px 10px; cursor: pointer; outline: none;
+  appearance: none; padding-right: 22px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+  transition: border-color .12s;
+}
+.filter-sel:focus { border-color: var(--border-dark); }
+.filter-sel option { background: white; }
+.jobs-count { margin-left: auto; font-size: 12px; color: var(--text-3); white-space: nowrap; flex-shrink: 0; }
+
+/* ── Job list ── */
+.jobs-wrap { max-width: 800px; margin: 0 auto; padding: 16px 24px 88px; }
 .job-card {
-  background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius);
-  padding: 18px 20px; cursor: pointer; transition: all 0.15s;
-  display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
 }
-.job-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(0,200,117,0.1); transform: translateY(-1px); }
-.job-cat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; margin-bottom: 10px; }
-.job-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.job-meta { font-size: 13px; color: var(--gray-400); display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
-.job-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 99px; }
-.badge-green { background: var(--green-soft); color: var(--green-dark); }
-.badge-amber { background: var(--amber-soft); color: #92400E; }
-.badge-blue { background: var(--blue-soft); color: var(--blue-dark); }
-.badge-gray { background: var(--gray-100); color: var(--gray-600); }
-.badge-dot::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; display:inline-block; }
-.job-wage { font-size: 24px; font-weight: 700; color: var(--green-dark); font-family: 'DM Mono', monospace; letter-spacing: -0.5px; white-space: nowrap; }
-.job-wage span { font-size: 13px; font-weight: 400; color: var(--gray-400); }
-.job-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-.slots-bar { width: 80px; height: 4px; background: var(--gray-200); border-radius: 99px; overflow: hidden; }
-.slots-fill { height: 100%; background: var(--green); border-radius: 99px; }
-.slots-label { font-size: 11px; color: var(--gray-400); }
+.job-card:hover { border-color: var(--border-dark); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.job-card-left {}
+.job-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.job-name { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
+.tag {
+  font-size: 11px; font-weight: 400; padding: 2px 8px; border-radius: 99px;
+  border: 1px solid var(--border); color: var(--text-3);
+}
+.tag-open { color: var(--green); border-color: #BBF7D0; background: var(--green-bg); }
+.tag-few  { color: var(--amber); border-color: #FDE68A; background: var(--amber-bg); }
+.tag-full { color: var(--text-3); border-color: var(--border); background: var(--bg); }
+.job-meta {
+  font-size: 12px; color: var(--text-2);
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.job-meta span { display: flex; align-items: center; gap: 4px; }
+.job-skills { display: flex; gap: 5px; flex-wrap: wrap; }
+.skill-tag {
+  font-size: 11px; color: var(--text-3);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 2px 8px;
+}
+.job-card-right { text-align: right; flex-shrink: 0; padding-top: 2px; }
+.wage { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -0.5px; }
+.wage-unit { font-size: 11px; font-weight: 400; color: var(--text-3); }
+.slots-label { font-size: 11px; color: var(--text-3); margin-top: 6px; }
+.slots-bar {
+  width: 60px; height: 3px;
+  background: var(--border); border-radius: 2px;
+  margin: 4px 0 0 auto; overflow: hidden;
+}
+.slots-fill { height: 100%; background: var(--accent); border-radius: 2px; }
 
-/* ── Modal ── */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; justify-content: center; padding: 0; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--white); border-radius: 20px 20px 0 0; width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding-bottom: 32px; }
-.modal-handle { width: 36px; height: 4px; background: var(--gray-200); border-radius: 99px; margin: 12px auto 0; }
-.modal-inner { padding: 20px 28px; }
-.modal-cat { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray-400); margin-bottom: 8px; }
-.modal-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; }
-.modal-wage { font-size: 32px; font-weight: 700; color: var(--green-dark); font-family: 'DM Mono', monospace; margin-bottom: 4px; }
-.modal-section { margin-top: 20px; }
-.modal-section-title { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.info-item { background: var(--gray-100); border-radius: var(--radius-sm); padding: 12px 14px; }
-.info-label { font-size: 11px; color: var(--gray-400); margin-bottom: 4px; }
-.info-value { font-size: 14px; font-weight: 500; }
-.modal-desc { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
-.apply-bar { position: sticky; bottom: 0; background: var(--white); border-top: 1px solid var(--gray-200); padding: 14px 28px; display: flex; gap: 12px; align-items: center; }
-.btn-apply { flex: 1; background: var(--green); color: var(--black); font-size: 15px; font-weight: 700; padding: 14px; border-radius: var(--radius-sm); border: none; cursor: pointer; transition: background 0.15s; }
-.btn-apply:hover { background: var(--green-dark); color: var(--white); }
-.btn-close { padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: transparent; font-size: 14px; cursor: pointer; color: var(--gray-600); }
+.empty { text-align: center; padding: 60px 0; font-size: 13px; color: var(--text-3); }
 
-/* ── Register Page ── */
-.reg-wrap { max-width: 560px; margin: 0 auto; }
-.reg-step { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
-.reg-step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: var(--black); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.step-title { font-size: 15px; font-weight: 600; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-group.full { grid-column: 1 / -1; }
-label { font-size: 12px; font-weight: 500; color: var(--gray-600); }
-input, select, textarea { padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--black); background: var(--white); outline: none; transition: border-color 0.15s; width: 100%; }
-input:focus, select:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,200,117,0.1); }
-textarea { resize: vertical; min-height: 80px; }
-.upload-zone { border: 2px dashed var(--gray-200); border-radius: var(--radius-sm); padding: 22px; text-align: center; cursor: pointer; transition: all 0.15s; color: var(--gray-400); }
-.upload-zone:hover { border-color: var(--green); color: var(--green-dark); background: var(--green-soft); }
-.bank-note { background: var(--green-soft); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13px; color: var(--green-dark); margin-bottom: 14px; display: flex; gap: 8px; }
-.btn-submit { width: 100%; background: var(--green); color: var(--black); font-size: 15px; font-weight: 700; padding: 14px; border-radius: var(--radius-sm); border: none; cursor: pointer; margin-top: 4px; transition: background 0.15s; }
-.btn-submit:hover { background: var(--green-dark); color: var(--white); }
+/* ══ DRAWER ══ */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.35); z-index: 200;
+  align-items: flex-end; justify-content: center;
+}
+@media(min-width:640px){ .overlay{ align-items: center; } }
+.overlay.open { display: flex; }
+.drawer {
+  background: var(--surface);
+  border-radius: 12px 12px 0 0;
+  width: 100%; max-width: 600px;
+  max-height: 90vh; overflow-y: auto;
+}
+@media(min-width:640px){ .drawer{ border-radius: 10px; } }
+.drawer-handle {
+  width: 32px; height: 3px; background: var(--border);
+  border-radius: 2px; margin: 12px auto 0;
+}
+.drawer-body { padding: 20px 24px 0; }
+.drawer-cat { font-size: 11px; color: var(--text-3); margin-bottom: 6px; letter-spacing: .02em; }
+.drawer-title { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+.drawer-company { font-size: 13px; color: var(--text-2); margin-bottom: 16px; }
+.drawer-wage-row {
+  display: flex; align-items: baseline; gap: 4px;
+  padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.drawer-wage { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+.drawer-wage-u { font-size: 12px; color: var(--text-3); }
+.info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
+}
+.info-cell {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 10px 12px;
+}
+.info-label { font-size: 10px; color: var(--text-3); margin-bottom: 3px; text-transform: uppercase; letter-spacing: .06em; }
+.info-val { font-size: 13px; color: var(--text); font-weight: 500; }
+.drawer-section { margin-bottom: 16px; }
+.drawer-section-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.drawer-desc { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.drawer-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.drawer-tag {
+  font-size: 11px; color: var(--text-3);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 3px 10px;
+}
+/* Apply form */
+.apply-view { display: none; }
+.apply-view.show { display: block; }
+.detail-view { display: block; }
+.detail-view.hide { display: none; }
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-2); cursor: pointer;
+  background: none; border: none; font-family: inherit;
+  margin-bottom: 16px; padding: 0;
+}
+.back-btn:hover { color: var(--text); }
+.apply-job-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 12px 14px; margin-bottom: 14px;
+}
+.apply-job-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.apply-job-meta { font-size: 12px; color: var(--text-2); }
+.bank-info-box {
+  background: var(--accent-bg); border: 1px solid #BFDBFE;
+  border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 14px;
+  font-size: 12px; color: #1D4ED8; line-height: 1.6;
+}
+.drawer-footer {
+  position: sticky; bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex; gap: 8px;
+}
+.btn-close {
+  font-size: 13px; color: var(--text-2); font-weight: 400;
+  background: none; border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 9px 16px; cursor: pointer;
+  font-family: inherit; transition: border-color .15s;
+}
+.btn-close:hover { border-color: var(--border-dark); }
+.btn-apply {
+  flex: 1; font-size: 13px; font-weight: 500; color: var(--surface);
+  background: var(--accent); border: none; border-radius: var(--r-sm);
+  padding: 9px 16px; cursor: pointer; font-family: inherit;
+  transition: opacity .15s;
+}
+.btn-apply:hover { opacity: .87; }
 
-/* ── Mypage ── */
-.mypage-wrap { max-width: 600px; margin: 0 auto; }
-.profile-hero { background: var(--black); border-radius: var(--radius); padding: 24px; color: var(--white); display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-.p-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--green); color: var(--black); font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-.p-name { font-size: 20px; font-weight: 600; }
-.p-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 3px; }
-.info-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; }
-.info-card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
-.btn-sm { padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: transparent; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--gray-600); }
-.btn-sm:hover { background: var(--gray-100); }
-table { width: 100%; border-collapse: collapse; }
-th { text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); background: var(--gray-100); }
-td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); font-size: 14px; vertical-align: middle; }
-tr:last-child td { border-bottom: none; }
+/* ── Form elements ── */
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; font-family: inherit; font-size: 13px; color: var(--text);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 9px 11px; outline: none;
+  transition: border-color .15s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--accent); background: var(--surface); }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text-3); }
+.form-group select option { background: white; }
+.form-group textarea { resize: vertical; min-height: 72px; }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.check-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
+.check-row input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.check-row label { font-size: 12px; color: var(--text-2); line-height: 1.6; }
 
-/* ── Apply Form ── */
-.apply-form { display: none; padding: 20px 28px; }
-.apply-form.show { display: block; }
-.apply-job-info { background: var(--gray-100); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px; }
-.apply-job-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.apply-job-sub { font-size: 13px; color: var(--gray-400); }
-.check-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
-.check-row input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); margin-top: 2px; flex-shrink: 0; }
-.check-row label { font-size: 13px; color: var(--gray-600); }
+/* ══ REGISTER PAGE ══ */
+.reg-page { max-width: 520px; margin: 0 auto; padding: 32px 24px 96px; }
+.page-head { margin-bottom: 24px; }
+.page-head h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+.page-head p { font-size: 13px; color: var(--text-2); }
+.step-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px; margin-bottom: 10px;
+}
+.step-label {
+  font-size: 11px; color: var(--text-3); text-transform: uppercase;
+  letter-spacing: .1em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--text); color: var(--surface);
+  font-size: 10px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-zone {
+  border: 1px dashed var(--border-dark); border-radius: var(--r-sm);
+  padding: 24px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-size: 13px; color: var(--text-3);
+}
+.upload-zone:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.upload-zone .u-icon { font-size: 20px; margin-bottom: 6px; }
+.upload-zone .u-sub { font-size: 11px; margin-top: 4px; color: var(--text-3); }
+.bank-note {
+  background: var(--accent-bg); border: 1px solid #BFDBFE;
+  border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 14px;
+  font-size: 12px; color: #1D4ED8; line-height: 1.6;
+}
+.btn-submit {
+  width: 100%; font-size: 13px; font-weight: 500;
+  color: var(--surface); background: var(--text);
+  border: none; border-radius: var(--r-sm);
+  padding: 11px; cursor: pointer; font-family: inherit;
+  transition: opacity .15s; margin-top: 6px;
+}
+.btn-submit:hover { opacity: .8; }
+
+/* ══ MYPAGE ══ */
+.my-page { max-width: 580px; margin: 0 auto; padding: 32px 24px 96px; }
+.profile-row {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 18px 20px; margin-bottom: 10px;
+}
+.av {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--text); color: var(--surface);
+  font-size: 15px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.av-name { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+.av-sub { font-size: 12px; color: var(--text-3); }
+.info-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 18px 20px; margin-bottom: 10px;
+}
+.block-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.block-title { font-size: 13px; font-weight: 500; }
+.btn-edit {
+  font-size: 11px; color: var(--accent); background: var(--accent-bg);
+  border: 1px solid #BFDBFE; border-radius: var(--r-sm);
+  padding: 4px 10px; cursor: pointer; font-family: inherit;
+}
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.data-item {}
+.data-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 3px; }
+.data-val { font-size: 13px; color: var(--text); }
+.history-tbl { width: 100%; border-collapse: collapse; }
+.history-tbl th {
+  text-align: left; font-size: 10px; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--text-3);
+  padding: 0 0 8px; border-bottom: 1px solid var(--border); font-weight: 500;
+}
+.history-tbl td {
+  padding: 10px 0; border-bottom: 1px solid var(--bg);
+  font-size: 13px; color: var(--text-2); vertical-align: middle;
+}
+.history-tbl tr:last-child td { border-bottom: none; }
+.amt { font-size: 14px; font-weight: 500; color: var(--text); text-align: right; }
+.status-tag { font-size: 10px; padding: 2px 8px; border-radius: 99px; }
+.s-done { background: var(--green-bg); color: var(--green); border: 1px solid #BBF7D0; }
+.s-pend { background: var(--bg); color: var(--text-3); border: 1px solid var(--border); }
+.total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 12px; border-top: 1px solid var(--border); margin-top: 4px;
+}
+.total-label { font-size: 12px; color: var(--text-3); }
+.total-amt { font-size: 18px; font-weight: 600; }
 
 /* ── Toast ── */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--black); color: var(--white); padding: 12px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; z-index: 999; display: flex; align-items: center; gap: 8px; opacity: 0; transition: all 0.3s; white-space: nowrap; }
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  opacity: 0; z-index: 999; transition: all .25s;
+  background: var(--text); color: var(--surface);
+  font-size: 13px; padding: 10px 18px;
+  border-radius: var(--r-sm); white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+}
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-@media (max-width: 640px) {
-  .jobs-layout { grid-template-columns: 1fr; }
-  .filter-panel { position: static; }
-  .hero-stats { gap: 20px; }
+@media(max-width:600px){
+  .home-title { font-size: 18px; }
+  .job-card { grid-template-columns: 1fr; gap: 12px; }
+  .job-card-right { text-align: left; display: flex; align-items: center; gap: 14px; }
+  .slots-bar { margin: 0; }
   .info-grid { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .modal { border-radius: 20px 20px 0 0; }
+  .form-2col { grid-template-columns: 1fr; }
+  .data-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">AXIA LINKX</div>
-  <nav class="header-nav">
-    <button class="nav-link active" onclick="showPage('home')">求人を探す</button>
-    <button class="nav-link" onclick="showPage('register')">新規登録</button>
-    <button class="nav-link" onclick="showPage('mypage')">マイページ</button>
-    <button class="btn-header" onclick="showPage('register')">今すぐ登録</button>
-  </nav>
+<header class="header">
+  <div class="logo" onclick="showPage('home')">AXIA LINKX</div>
 </header>
 
-<!-- ═══ HOME ═══ -->
+<nav class="bottom-nav">
+  <button class="tab-item active" id="tab-home" onclick="showPage('home')">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span class="tab-label">求人</span>
+  </button>
+  <button class="tab-item" id="tab-register" onclick="showPage('register')">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+    <span class="tab-label">登録</span>
+  </button>
+  <button class="tab-item" id="tab-mypage" onclick="showPage('mypage')">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <span class="tab-label">マイページ</span>
+  </button>
+</nav>
+
+<!-- ══════ HOME ══════ -->
 <div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-label">✦ スポットワーク求人</div>
-    <h1>今日から<em>はじめられる</em><br>仕事が見つかる</h1>
-    <p>口座を登録するだけ。給与は企業から直接振り込み。</p>
-    <div class="hero-search">
-      <input type="text" placeholder="職種・エリアで探す..." id="hero-search-input" oninput="liveSearch()">
-      <button onclick="liveSearch()">検索</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">1,240</div><div class="hero-stat-label">掲載求人数</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">128</div><div class="hero-stat-label">登録ワーカー</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">¥1,200〜</div><div class="hero-stat-label">平均時給</div></div>
+  <div class="home-top">
+    <div class="home-title">求人を探す</div>
+    <div class="search-row">
+      <input class="search-input" type="text" placeholder="職種・エリア" id="s-input" oninput="applyFilters()">
+      <button class="search-btn" onclick="applyFilters()">検索</button>
     </div>
   </div>
 
-  <div class="container">
-    <div class="jobs-layout">
-      <!-- Filter sidebar -->
-      <aside class="filter-panel">
-        <div class="filter-title">絞り込み</div>
-        <div class="filter-group">
-          <label>カテゴリ</label>
-          <div>
-            <button class="filter-chip active" onclick="toggleCat(this,'')">すべて</button>
-            <button class="filter-chip" onclick="toggleCat(this,'飲食')">🍽 飲食</button>
-            <button class="filter-chip" onclick="toggleCat(this,'軽作業')">📦 軽作業</button>
-            <button class="filter-chip" onclick="toggleCat(this,'イベント')">🎪 イベント</button>
-            <button class="filter-chip" onclick="toggleCat(this,'清掃')">🧹 清掃</button>
-          </div>
-        </div>
-        <div class="filter-group">
-          <label>時給（円以上）</label>
-          <input type="range" class="filter-range" min="900" max="2000" value="900" step="50" id="wage-filter" oninput="updateWageLabel(this.value);applyFilters()">
-          <div style="font-size:13px;color:var(--gray-600);margin-top:6px;">¥<span id="wage-label">900</span>〜</div>
-        </div>
-        <div class="filter-group">
-          <label>勤務時間帯</label>
-          <div>
-            <button class="filter-chip active" onclick="toggleTime(this,'')">すべて</button>
-            <button class="filter-chip" onclick="toggleTime(this,'morning')">🌅 早朝〜昼</button>
-            <button class="filter-chip" onclick="toggleTime(this,'evening')">🌆 夕方〜夜</button>
-          </div>
-        </div>
-        <button class="filter-reset" onclick="resetFilters()">絞り込みをリセット</button>
-      </aside>
+  <div class="filter-strip">
+    <button class="chip on" onclick="setCat(this,'')">すべて</button>
+    <button class="chip" onclick="setCat(this,'飲食')">飲食</button>
+    <button class="chip" onclick="setCat(this,'軽作業')">軽作業</button>
+    <button class="chip" onclick="setCat(this,'イベント')">イベント</button>
+    <button class="chip" onclick="setCat(this,'清掃')">清掃</button>
+    <div class="strip-sep"></div>
+    <select class="filter-sel" id="wage-f" onchange="applyFilters()">
+      <option value="0">時給：すべて</option>
+      <option value="1100">¥1,100以上</option>
+      <option value="1200">¥1,200以上</option>
+      <option value="1350">¥1,350以上</option>
+      <option value="1500">¥1,500以上</option>
+    </select>
+    <select class="filter-sel" id="sort-f" onchange="applyFilters()">
+      <option value="wage">時給が高い順</option>
+      <option value="slots">残り枠が多い順</option>
+    </select>
+    <span class="jobs-count" id="jobs-count"></span>
+  </div>
 
-      <!-- Jobs list -->
-      <div>
-        <div class="jobs-header">
-          <div class="jobs-count" id="jobs-count">0件の求人</div>
-          <div class="jobs-sort">
-            <select onchange="applyFilters()" id="sort-select">
-              <option value="wage">時給が高い順</option>
-              <option value="new">新着順</option>
-            </select>
-          </div>
-        </div>
-        <div class="jobs-grid" id="jobs-list"></div>
-      </div>
-    </div>
+  <div class="jobs-wrap">
+    <div id="jobs-list"></div>
   </div>
 </div>
 
-<!-- ═══ REGISTER ═══ -->
+<!-- ══════ REGISTER ══════ -->
 <div class="page" id="page-register">
-  <div class="container">
-    <div class="reg-wrap">
-      <h2 style="font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px;">ワーカー新規登録</h2>
-      <p style="font-size:14px;color:var(--gray-400);margin-bottom:24px;">3ステップで完了。給与は登録口座に企業から直接振り込まれます。</p>
-
-      <div class="reg-step">
-        <div class="reg-step-head">
-          <div class="step-num">1</div>
-          <div class="step-title">基本情報</div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group"><label>姓</label><input type="text" placeholder="山田" id="r-sei"></div>
-          <div class="form-group"><label>名</label><input type="text" placeholder="太郎" id="r-mei"></div>
-          <div class="form-group"><label>生年月日</label><input type="date" id="r-dob"></div>
-          <div class="form-group"><label>電話番号</label><input type="tel" placeholder="090-0000-0000" id="r-tel"></div>
-          <div class="form-group full"><label>メールアドレス</label><input type="email" placeholder="example@email.com" id="r-email"></div>
-          <div class="form-group full"><label>住所</label><input type="text" placeholder="大阪府大阪市北区..." id="r-address"></div>
-        </div>
-      </div>
-
-      <div class="reg-step">
-        <div class="reg-step-head">
-          <div class="step-num">2</div>
-          <div class="step-title">口座情報（給与振込先）</div>
-        </div>
-        <div class="bank-note">
-          💳 給与は企業からご登録の口座へ直接振り込まれます。当プラットフォームは振込を仲介しません。
-        </div>
-        <div class="form-grid">
-          <div class="form-group"><label>銀行名</label><input type="text" placeholder="〇〇銀行" id="r-bank"></div>
-          <div class="form-group"><label>支店名</label><input type="text" placeholder="梅田支店" id="r-branch"></div>
-          <div class="form-group"><label>口座種別</label><select id="r-actype"><option>普通</option><option>当座</option></select></div>
-          <div class="form-group"><label>口座番号（7桁）</label><input type="text" placeholder="1234567" maxlength="7" id="r-acnum"></div>
-          <div class="form-group full"><label>口座名義（カタカナ）</label><input type="text" placeholder="ヤマダ タロウ" id="r-acname"></div>
-        </div>
-      </div>
-
-      <div class="reg-step">
-        <div class="reg-step-head">
-          <div class="step-num">3</div>
-          <div class="step-title">本人確認</div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group full">
-            <label>証明書の種類</label>
-            <select><option>運転免許証</option><option>マイナンバーカード</option><option>パスポート</option><option>在留カード</option></select>
-          </div>
-          <div class="form-group full">
-            <label>証明書の画像（表面）</label>
-            <div class="upload-zone" onclick="showToast('ファイル選択を開きます')">
-              <div style="font-size:28px;margin-bottom:8px;">📎</div>
-              <div style="font-size:14px;font-weight:500;">クリックしてアップロード</div>
-              <div style="font-size:12px;margin-top:4px;color:var(--gray-400);">PNG, JPG, PDF — 最大10MB</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="padding:4px 0;">
-        <div class="check-row">
-          <input type="checkbox" id="agree1">
-          <label for="agree1">利用規約・プライバシーポリシーに同意します</label>
-        </div>
-        <div class="check-row">
-          <input type="checkbox" id="agree2">
-          <label for="agree2">給与が企業から直接口座に振り込まれることを理解しました</label>
-        </div>
-      </div>
-      <button class="btn-submit" onclick="submitRegister()">登録を完了する →</button>
+  <div class="reg-page">
+    <div class="page-head">
+      <h1>新規登録</h1>
+      <p>口座を登録するだけで給与を受け取れます。</p>
     </div>
+
+    <div class="step-block">
+      <div class="step-label"><div class="step-num">1</div>基本情報</div>
+      <div class="form-2col">
+        <div class="form-group"><label>姓</label><input type="text" placeholder="山田"></div>
+        <div class="form-group"><label>名</label><input type="text" placeholder="太郎"></div>
+        <div class="form-group"><label>生年月日</label><input type="date"></div>
+        <div class="form-group"><label>電話番号</label><input type="tel" placeholder="090-0000-0000"></div>
+      </div>
+      <div class="form-group"><label>メールアドレス</label><input type="email" placeholder="example@email.com"></div>
+      <div class="form-group"><label>住所</label><input type="text" placeholder="大阪府大阪市…"></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><div class="step-num">2</div>口座情報</div>
+      <div class="bank-note">給与は企業から直接この口座に振り込まれます。</div>
+      <div class="form-2col">
+        <div class="form-group"><label>銀行名</label><input type="text" placeholder="〇〇銀行"></div>
+        <div class="form-group"><label>支店名</label><input type="text" placeholder="梅田支店"></div>
+        <div class="form-group"><label>口座種別</label><select><option>普通</option><option>当座</option></select></div>
+        <div class="form-group"><label>口座番号</label><input type="text" placeholder="1234567" maxlength="7"></div>
+      </div>
+      <div class="form-group"><label>口座名義（カタカナ）</label><input type="text" placeholder="ヤマダ タロウ"></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><div class="step-num">3</div>本人確認</div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>証明書の種類</label>
+        <select><option>運転免許証</option><option>マイナンバーカード</option><option>パスポート</option><option>在留カード</option></select>
+      </div>
+      <div class="upload-zone" onclick="showToast('ファイルを選択してください')">
+        <div class="u-icon">↑</div>
+        <div>画像をアップロード</div>
+        <div class="u-sub">PNG / JPG / PDF　最大10MB</div>
+      </div>
+    </div>
+
+    <div style="margin: 16px 0 4px;">
+      <div class="check-row"><input type="checkbox" id="ag1"><label for="ag1">利用規約・プライバシーポリシーに同意します</label></div>
+      <div class="check-row"><input type="checkbox" id="ag2"><label for="ag2">給与が企業から直接振り込まれることを確認しました</label></div>
+    </div>
+    <button class="btn-submit" onclick="submitReg()">登録する</button>
   </div>
 </div>
 
-<!-- ═══ MYPAGE ═══ -->
+<!-- ══════ MYPAGE ══════ -->
 <div class="page" id="page-mypage">
-  <div class="container">
-    <div class="mypage-wrap">
-      <div class="profile-hero">
-        <div class="p-avatar">田</div>
-        <div>
-          <div class="p-name">田中 花子</div>
-          <div class="p-sub">登録日: 2025年10月15日</div>
-          <div style="margin-top:8px;"><span class="badge badge-green badge-dot">本人確認済</span></div>
-        </div>
-      </div>
+  <div class="my-page">
+    <div class="page-head"><h1>マイページ</h1></div>
 
-      <div class="info-card">
-        <div class="info-card-title">
-          口座情報
-          <button class="btn-sm" onclick="showToast('口座情報を変更しました')">変更する</button>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div><div style="font-size:11px;color:var(--gray-400);margin-bottom:3px;">銀行名</div><div style="font-size:14px;font-weight:500;">〇〇銀行 梅田支店</div></div>
-          <div><div style="font-size:11px;color:var(--gray-400);margin-bottom:3px;">口座番号</div><div style="font-size:14px;font-weight:500;font-family:'DM Mono',monospace;">普通 ****321</div></div>
-          <div><div style="font-size:11px;color:var(--gray-400);margin-bottom:3px;">名義人</div><div style="font-size:14px;font-weight:500;">タナカ ハナコ</div></div>
-        </div>
+    <div class="profile-row">
+      <div class="av">田</div>
+      <div>
+        <div class="av-name">田中 花子</div>
+        <div class="av-sub">登録日 2025/10/15　本人確認済</div>
       </div>
+    </div>
 
-      <div class="info-card">
-        <div class="info-card-title">勤務履歴・給与</div>
-        <table>
-          <thead><tr>
-            <th>勤務日</th><th>仕事</th><th style="text-align:right;">給与</th><th style="text-align:center;">振込</th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td>11月20日</td><td>カフェスタッフ</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:500;">¥6,000</td>
-              <td style="text-align:center;"><span class="badge badge-green badge-dot">振込済</span></td>
-            </tr>
-            <tr>
-              <td>11月18日</td><td>倉庫ピッキング</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:500;">¥10,800</td>
-              <td style="text-align:center;"><span class="badge badge-amber badge-dot">処理中</span></td>
-            </tr>
-            <tr>
-              <td>11月10日</td><td>イベントスタッフ</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:500;">¥13,500</td>
-              <td style="text-align:center;"><span class="badge badge-green badge-dot">振込済</span></td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="border-top:1px solid var(--gray-200);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:13px;color:var(--gray-400);">今月の合計</span>
-          <span style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green-dark);">¥30,300</span>
-        </div>
+    <div class="info-block">
+      <div class="block-header">
+        <div class="block-title">口座情報</div>
+        <button class="btn-edit" onclick="showToast('口座情報を変更しました')">変更</button>
+      </div>
+      <div class="data-grid">
+        <div class="data-item"><div class="data-label">銀行</div><div class="data-val">〇〇銀行 梅田支店</div></div>
+        <div class="data-item"><div class="data-label">口座番号</div><div class="data-val">普通 ****321</div></div>
+        <div class="data-item"><div class="data-label">名義</div><div class="data-val">タナカ ハナコ</div></div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="block-header"><div class="block-title">勤務履歴</div></div>
+      <table class="history-tbl">
+        <thead><tr>
+          <th>日付</th><th>仕事</th><th style="text-align:right;">給与</th><th style="text-align:center;">振込</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>11/20</td><td>カフェスタッフ</td><td class="amt">¥6,000</td><td style="text-align:center;"><span class="status-tag s-done">振込済</span></td></tr>
+          <tr><td>11/18</td><td>倉庫ピッキング</td><td class="amt">¥10,800</td><td style="text-align:center;"><span class="status-tag s-pend">処理中</span></td></tr>
+          <tr><td>11/10</td><td>イベントスタッフ</td><td class="amt">¥13,500</td><td style="text-align:center;"><span class="status-tag s-done">振込済</span></td></tr>
+        </tbody>
+      </table>
+      <div class="total-row">
+        <span class="total-label">今月の合計</span>
+        <span class="total-amt">¥30,300</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Job Detail Modal -->
-<div class="modal-overlay" id="job-modal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div id="modal-detail-view">
-      <div class="modal-inner" id="modal-content"></div>
-      <div class="apply-bar">
-        <button class="btn-close" onclick="closeModal()">閉じる</button>
-        <button class="btn-apply" onclick="showApplyForm()">この求人に応募する →</button>
+<!-- ══════ DRAWER ══════ -->
+<div class="overlay" id="overlay">
+  <div class="drawer" id="drawer">
+    <div class="drawer-handle"></div>
+
+    <!-- Detail -->
+    <div class="detail-view" id="detail-view">
+      <div class="drawer-body">
+        <div class="drawer-cat" id="d-cat"></div>
+        <div class="drawer-title" id="d-title"></div>
+        <div class="drawer-company" id="d-company"></div>
+        <div class="drawer-wage-row">
+          <div class="drawer-wage" id="d-wage"></div>
+          <div class="drawer-wage-u">円 / 時間</div>
+        </div>
+        <div class="info-grid" id="d-info"></div>
+        <div class="drawer-section">
+          <div class="drawer-section-label">仕事内容</div>
+          <div class="drawer-desc" id="d-desc"></div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-section-label">条件・スキル</div>
+          <div class="drawer-tags" id="d-tags"></div>
+        </div>
+        <div style="height:72px;"></div>
+      </div>
+      <div class="drawer-footer">
+        <button class="btn-close" onclick="closeDrawer()">閉じる</button>
+        <button class="btn-apply" onclick="showApply()">応募する</button>
       </div>
     </div>
-    <div class="apply-form" id="apply-form-view">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-        <button onclick="hideApplyForm()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-400);">←</button>
-        <span style="font-size:16px;font-weight:600;">応募フォーム</span>
+
+    <!-- Apply -->
+    <div class="apply-view" id="apply-view">
+      <div class="drawer-body">
+        <button class="back-btn" onclick="hideApply()">← 戻る</button>
+        <div class="apply-job-box">
+          <div class="apply-job-name" id="a-name"></div>
+          <div class="apply-job-meta" id="a-meta"></div>
+        </div>
+        <div class="bank-info-box">振込先：〇〇銀行 普通 ****321（登録口座）</div>
+        <div class="form-group">
+          <label>一言コメント（任意）</label>
+          <textarea placeholder="経験・アピールポイントなど"></textarea>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="a-chk">
+          <label for="a-chk">勤務条件を確認しました</label>
+        </div>
+        <div style="height:72px;"></div>
       </div>
-      <div class="apply-job-info" id="apply-job-info"></div>
-      <p style="font-size:13px;color:var(--gray-600);background:var(--green-soft);padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:16px;">
-        💳 登録口座（〇〇銀行 普通 ****321）に給与が振り込まれます
-      </p>
-      <div class="form-group" style="margin-bottom:14px;">
-        <label>PR・アピールポイント（任意）</label>
-        <textarea placeholder="経験や得意なことを書いてください..."></textarea>
+      <div class="drawer-footer">
+        <button class="btn-close" onclick="hideApply()">戻る</button>
+        <button class="btn-apply" onclick="submitApply()">応募を確定する</button>
       </div>
-      <div class="check-row"><input type="checkbox" id="apply-agree"><label for="apply-agree">勤務条件・給与振込方法を確認しました</label></div>
-      <button class="btn-submit" style="margin-top:12px;" onclick="submitApply()">応募する →</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"><span style="color:var(--green);">✓</span> <span id="toast-msg"></span></div>
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
 
 <script>
-const jobs = [
-  { id:1, title:'カフェスタッフ', company:'Blue Café 大阪', cat:'飲食', icon:'☕', location:'大阪市北区', dist:'徒歩5分', start:'10:00', end:'15:00', wage:1200, slots:2, filled:0, tags:['接客','ドリンク補助','経験不問'], desc:'おしゃれなカフェでホール・ドリンク補助業務をお任せします。笑顔で接客できる方歓迎。制服あり。', timeSlot:'morning' },
-  { id:2, title:'倉庫ピッキング', company:'物流センター大阪', cat:'軽作業', icon:'📦', location:'大阪市住之江区', dist:'車10分', start:'08:00', end:'17:00', wage:1350, slots:5, filled:3, tags:['軽作業','フォークなし','即日払い可'], desc:'商品の仕分け・ピッキング作業です。立ち仕事ですが体力に自信のある方であれば未経験でもOK。', timeSlot:'morning' },
-  { id:3, title:'居酒屋ホール', company:'はなの家 中央店', cat:'飲食', icon:'🍺', location:'大阪市中央区', dist:'徒歩8分', start:'17:00', end:'23:00', wage:1100, slots:3, filled:1, tags:['接客','夜勤','交通費支給'], desc:'活気ある居酒屋でのホール業務全般。食事補助あり。週1日〜OKです。', timeSlot:'evening' },
-  { id:4, title:'イベントスタッフ', company:'イベント株式会社', cat:'イベント', icon:'🎪', location:'大阪城ホール', dist:'電車20分', start:'13:00', end:'22:00', wage:1500, slots:10, filled:10, tags:['誘導','清掃','交通費支給'], desc:'大型コンサートの誘導・清掃スタッフ。スタッフTシャツ支給。経験不問。', timeSlot:'evening' },
-  { id:5, title:'清掃スタッフ', company:'ビル管理サービス', cat:'清掃', icon:'🧹', location:'大阪市西区', dist:'徒歩3分', start:'06:00', end:'10:00', wage:1050, slots:4, filled:1, tags:['早朝','週2〜OK','経験不問'], desc:'オフィスビルの清掃業務。早朝のみなので副業・Wワークの方にも人気です。', timeSlot:'morning' },
-  { id:6, title:'コンビニスタッフ', company:'セブンイレブン 北区店', cat:'飲食', icon:'🏪', location:'大阪市北区', dist:'徒歩2分', start:'22:00', end:'06:00', wage:1300, slots:2, filled:0, tags:['深夜手当','週1〜OK','シフト自由'], desc:'深夜のコンビニスタッフ。レジ・品出し・清掃が主な業務です。深夜割増あり。', timeSlot:'evening' },
+const JOBS = [
+  {id:1,title:'カフェスタッフ',company:'Blue Café 大阪',cat:'飲食',loc:'大阪市北区',access:'徒歩5分',start:'10:00',end:'15:00',wage:1200,slots:2,filled:0,tags:['接客','ドリンク補助','経験不問'],desc:'ホールとドリンク補助をお任せします。制服貸与あり。'},
+  {id:2,title:'倉庫ピッキング',company:'物流センター大阪',cat:'軽作業',loc:'大阪市住之江区',access:'バス10分',start:'08:00',end:'17:00',wage:1350,slots:5,filled:3,tags:['軽作業','未経験OK','即日払い可'],desc:'商品の仕分けとピッキング作業です。動きやすい服装でお越しください。'},
+  {id:3,title:'居酒屋ホール',company:'はなの家 中央店',cat:'飲食',loc:'大阪市中央区',access:'徒歩8分',start:'17:00',end:'23:00',wage:1100,slots:3,filled:1,tags:['接客','週1〜OK','食事補助'],desc:'ホール業務全般。週1日から勤務可能。交通費支給あり。'},
+  {id:4,title:'イベントスタッフ',company:'イベント株式会社',cat:'イベント',loc:'大阪城ホール',access:'電車20分',start:'13:00',end:'22:00',wage:1500,slots:10,filled:10,tags:['誘導','清掃','交通費支給'],desc:'コンサートの誘導・清掃スタッフ。ウェア支給あり。'},
+  {id:5,title:'清掃スタッフ',company:'ビル管理サービス',cat:'清掃',loc:'大阪市西区',access:'徒歩3分',start:'06:00',end:'10:00',wage:1050,slots:4,filled:1,tags:['早朝','週2〜','副業OK'],desc:'オフィスビルの清掃。早朝のみのシフト。'},
+  {id:6,title:'深夜コンビニスタッフ',company:'セブンイレブン 北区店',cat:'飲食',loc:'大阪市北区',access:'徒歩2分',start:'22:00',end:'06:00',wage:1300,slots:2,filled:0,tags:['深夜手当','週1〜','シフト自由'],desc:'レジ・品出し・清掃が主な業務。深夜手当あり。'},
 ];
 
-let catFilter = '';
-let timeFilter = '';
-let minWage = 900;
-let searchQuery = '';
-let selectedJob = null;
+let catF='', minW=0, q='';
+let selected=null;
 
-function renderJobs() {
-  const sort = document.getElementById('sort-select') ? document.getElementById('sort-select').value : 'wage';
-  let filtered = jobs.filter(j => {
-    const matchCat = catFilter === '' || j.cat === catFilter;
-    const matchTime = timeFilter === '' || j.timeSlot === timeFilter;
-    const matchWage = j.wage >= minWage;
-    const q = searchQuery.toLowerCase();
-    const matchQ = q === '' || j.title.includes(searchQuery) || j.location.includes(searchQuery) || j.cat.includes(searchQuery);
-    return matchCat && matchTime && matchWage && matchQ;
-  });
-  if (sort === 'wage') filtered.sort((a,b) => b.wage - a.wage);
-
-  document.getElementById('jobs-count').textContent = filtered.length + '件の求人';
-  document.getElementById('jobs-list').innerHTML = filtered.map(j => {
-    const pct = Math.round((j.filled / j.slots) * 100);
-    const isFull = j.filled >= j.slots;
-    return `
-    <div class="job-card" onclick="openModal(${j.id})" style="${isFull?'opacity:0.6;':''}">
-      <div>
-        <div class="job-cat-icon" style="background:var(--gray-100);">${j.icon}</div>
-        <div class="job-title">${j.title}</div>
-        <div class="job-meta">
-          <span>📍 ${j.location}</span>
-          <span>🕐 ${j.start}〜${j.end}</span>
-          <span>🏢 ${j.company}</span>
-        </div>
-        <div class="job-tags">
-          ${j.tags.map(t=>`<span class="badge badge-blue">${t}</span>`).join('')}
-          ${isFull?'<span class="badge badge-gray">締切</span>':''}
-        </div>
-      </div>
-      <div class="job-right">
-        <span class="badge ${isFull?'badge-gray':'badge-green badge-dot'}">${isFull?'満員':'募集中'}</span>
-        <div class="job-wage">¥${j.wage.toLocaleString()}<span>/h</span></div>
-        <div class="slots-bar"><div class="slots-fill" style="width:${pct}%;"></div></div>
-        <div class="slots-label">残り${j.slots-j.filled}枠</div>
-      </div>
-    </div>`;
-  }).join('');
+function setCat(el,v){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on'); catF=v; applyFilters();
 }
-
-function toggleCat(el, val) {
-  document.querySelectorAll('.filter-panel .filter-group:nth-child(1) .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  catFilter = val;
-  applyFilters();
-}
-function toggleTime(el, val) {
-  document.querySelectorAll('.filter-panel .filter-group:nth-child(3) .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  timeFilter = val;
-  applyFilters();
-}
-function updateWageLabel(v) { document.getElementById('wage-label').textContent = parseInt(v).toLocaleString(); }
-function applyFilters() { minWage = parseInt(document.getElementById('wage-filter').value); renderJobs(); }
-function liveSearch() { searchQuery = document.getElementById('hero-search-input').value; renderJobs(); }
-function resetFilters() {
-  catFilter=''; timeFilter=''; minWage=900; searchQuery='';
-  document.getElementById('wage-filter').value = 900; updateWageLabel(900);
-  document.getElementById('hero-search-input').value = '';
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.filter-chip:first-of-type').forEach(c => c.classList.add('active'));
-  renderJobs();
+function applyFilters(){
+  q=document.getElementById('s-input').value.toLowerCase();
+  minW=parseInt(document.getElementById('wage-f').value)||0;
+  const sort=document.getElementById('sort-f').value;
+  let list=JOBS.filter(j=>
+    (!catF||j.cat===catF)&&
+    j.wage>=minW&&
+    (!q||(j.title+j.loc+j.cat+j.company).toLowerCase().includes(q))
+  );
+  if(sort==='wage') list.sort((a,b)=>b.wage-a.wage);
+  else list.sort((a,b)=>(b.slots-b.filled)-(a.slots-a.filled));
+  document.getElementById('jobs-count').textContent=list.length+'件';
+  const full=j=>j.filled>=j.slots;
+  const few=j=>!full(j)&&(j.slots-j.filled)<=2;
+  document.getElementById('jobs-list').innerHTML = list.length===0
+    ? '<div class="empty">該当する求人がありません</div>'
+    : list.map(j=>{
+        const pct=Math.round(j.filled/j.slots*100);
+        const tagCls=full(j)?'tag-full':few(j)?'tag-few':'tag-open';
+        const tagText=full(j)?'満員':few(j)?`残り${j.slots-j.filled}枠`:'募集中';
+        return `<div class="job-card" onclick="openDrawer(${j.id})">
+          <div class="job-card-left">
+            <div class="job-head">
+              <span class="job-name">${j.title}</span>
+              <span class="tag ${tagCls}">${tagText}</span>
+              <span class="tag">${j.cat}</span>
+            </div>
+            <div class="job-meta">
+              <span>📍 ${j.loc}</span>
+              <span>🕐 ${j.start}〜${j.end}</span>
+              <span>🏢 ${j.company}</span>
+            </div>
+            <div class="job-skills">${j.tags.map(t=>`<span class="skill-tag">${t}</span>`).join('')}</div>
+          </div>
+          <div class="job-card-right">
+            <div class="wage">¥${j.wage.toLocaleString()}<span class="wage-unit"> /h</span></div>
+            <div class="slots-label">${j.slots-j.filled}/${j.slots}枠</div>
+            <div class="slots-bar"><div class="slots-fill" style="width:${pct}%"></div></div>
+          </div>
+        </div>`;
+      }).join('');
 }
 
-function openModal(id) {
-  selectedJob = jobs.find(j => j.id === id);
-  const j = selectedJob;
-  document.getElementById('modal-content').innerHTML = `
-    <div class="modal-cat">${j.icon} ${j.cat} &nbsp;·&nbsp; 📍 ${j.location} (${j.dist})</div>
-    <div class="modal-title">${j.title}</div>
-    <div style="margin-bottom:6px;"><span class="badge badge-green badge-dot">募集中</span> &nbsp; <span style="font-size:13px;color:var(--gray-400);">残り${j.slots-j.filled}枠</span></div>
-    <div class="modal-wage">¥${j.wage.toLocaleString()}<span style="font-size:15px;font-weight:400;color:var(--gray-400);"> / 時間</span></div>
-    <div class="modal-section">
-      <div class="modal-section-title">勤務詳細</div>
-      <div class="info-grid">
-        <div class="info-item"><div class="info-label">勤務時間</div><div class="info-value">${j.start} 〜 ${j.end}</div></div>
-        <div class="info-item"><div class="info-label">募集人数</div><div class="info-value">${j.slots}名（残${j.slots-j.filled}枠）</div></div>
-        <div class="info-item"><div class="info-label">エリア</div><div class="info-value">${j.location}</div></div>
-        <div class="info-item"><div class="info-label">アクセス</div><div class="info-value">${j.dist}</div></div>
-      </div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">仕事内容</div>
-      <div class="modal-desc">${j.desc}</div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">求めるスキル</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">${j.tags.map(t=>`<span class="badge badge-blue">${t}</span>`).join('')}</div>
-    </div>
-    <div style="height:80px;"></div>
-  `;
-  document.getElementById('modal-detail-view').style.display='block';
-  document.getElementById('apply-form-view').classList.remove('show');
-  document.getElementById('job-modal').classList.add('open');
+function openDrawer(id){
+  selected=JOBS.find(j=>j.id===id);
+  const j=selected;
+  document.getElementById('d-cat').textContent=j.cat;
+  document.getElementById('d-title').textContent=j.title;
+  document.getElementById('d-company').textContent=j.company;
+  document.getElementById('d-wage').textContent='¥'+j.wage.toLocaleString();
+  document.getElementById('d-info').innerHTML=`
+    <div class="info-cell"><div class="info-label">時間</div><div class="info-val">${j.start}〜${j.end}</div></div>
+    <div class="info-cell"><div class="info-label">残り枠</div><div class="info-val">${j.slots-j.filled}/${j.slots}名</div></div>
+    <div class="info-cell"><div class="info-label">エリア</div><div class="info-val">${j.loc}</div></div>
+    <div class="info-cell"><div class="info-label">アクセス</div><div class="info-val">${j.access}</div></div>`;
+  document.getElementById('d-desc').textContent=j.desc;
+  document.getElementById('d-tags').innerHTML=j.tags.map(t=>`<span class="drawer-tag">${t}</span>`).join('');
+  document.getElementById('detail-view').classList.remove('hide');
+  document.getElementById('apply-view').classList.remove('show');
+  document.getElementById('overlay').classList.add('open');
 }
-function closeModal() {
-  document.getElementById('job-modal').classList.remove('open');
+function closeDrawer(){ document.getElementById('overlay').classList.remove('open'); }
+function showApply(){
+  const j=selected;
+  document.getElementById('a-name').textContent=j.title;
+  document.getElementById('a-meta').textContent=`${j.loc}　${j.start}〜${j.end}　¥${j.wage.toLocaleString()}/h`;
+  document.getElementById('detail-view').classList.add('hide');
+  document.getElementById('apply-view').classList.add('show');
 }
-function showApplyForm() {
-  const j = selectedJob;
-  document.getElementById('apply-job-info').innerHTML = `
-    <div class="apply-job-name">${j.title}</div>
-    <div class="apply-job-sub">📍 ${j.location} &nbsp;|&nbsp; 🕐 ${j.start}〜${j.end} &nbsp;|&nbsp; 💴 ¥${j.wage.toLocaleString()}/h</div>
-  `;
-  document.getElementById('modal-detail-view').style.display='none';
-  document.getElementById('apply-form-view').classList.add('show');
+function hideApply(){
+  document.getElementById('detail-view').classList.remove('hide');
+  document.getElementById('apply-view').classList.remove('show');
 }
-function hideApplyForm() {
-  document.getElementById('modal-detail-view').style.display='block';
-  document.getElementById('apply-form-view').classList.remove('show');
-}
-function submitApply() {
-  closeModal();
-  showToast('応募しました！企業からの連絡をお待ちください');
-}
+function submitApply(){ closeDrawer(); showToast('応募しました'); }
+document.getElementById('overlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeDrawer(); });
 
-document.getElementById('job-modal').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-  const map = { home:0, register:1, mypage:2 };
-  document.querySelectorAll('.nav-link')[map[id]]?.classList.add('active');
+  ['home','register','mypage'].forEach(n=>{
+    document.getElementById('tab-'+n).classList.toggle('active',n===id);
+  });
 }
-
-function submitRegister() {
-  if(!document.getElementById('agree1').checked || !document.getElementById('agree2').checked) {
-    showToast('チェックボックスに同意してください'); return;
+function submitReg(){
+  if(!document.getElementById('ag1').checked||!document.getElementById('ag2').checked){
+    showToast('同意事項を確認してください'); return;
   }
-  showToast('登録完了！求人を探してみましょう');
-  showPage('home');
+  showToast('登録しました'); showPage('home');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-renderJobs();
+applyFilters();
 </script>
 </body>
 </html>
